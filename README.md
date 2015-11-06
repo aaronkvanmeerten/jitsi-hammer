@@ -28,7 +28,7 @@ The **OPTIONAL_OPTIONS** are :
 -focusJID <JID of the focus user, by default this is 'focus.' + XMPPdomain>
 -s <use HTTPS instead of plain HTTP for BOSH communication>
 -room <name of the MUC room (default : TestHammer)>
--port <port number of the XMPP server (default: 5222)>
+-port <port number of the BOSH server (default: 80)>
 -users <number of fake users to create (default: 1)>
 -length <length of the run in seconds (default: 0)>
 -ivf <path to an ivf file for the video streams>
