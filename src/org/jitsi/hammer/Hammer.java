@@ -61,6 +61,11 @@ public class Hammer
         = Logger.getLogger(Hammer.class);
 
     /**
+     * The boolean flag indicating whether to disable stats gathering or not
+     */
+    private boolean disableStats;
+
+    /**
      * The base of the nickname use by all the virtual users this Hammer
      * will create.
      */
@@ -192,6 +197,7 @@ public class Hammer
      * @param conferenceInfo The information 
      *                       regarding the conference properties 
      *                       \for the video conference to be initiated
+     * @param disableStats whether statistics should be disabled.
      * will create and handle.
      */
     public Hammer(
@@ -199,13 +205,17 @@ public class Hammer
             MediaDeviceChooser mdc, 
             String nickname, 
             int numberOfUser, 
-            ConferenceInfo conferenceInfo)
+            ConferenceInfo conferenceInfo,
+            boolean disableStats)
     {
+        this.disableStats = disableStats;
         this.nickname = nickname;
         this.serverInfo = host;
         this.conferenceInfo = conferenceInfo;
         this.mediaDeviceChooser = mdc;
         fakeUsers = new FakeUser[numberOfUser];
+        if (!disableStats)
+            hammerStats = new HammerStats();
 
         for(int i = 0; i<fakeUsers.length; i++)
         {
@@ -318,7 +328,6 @@ public class Hammer
      *
      * @param wait the number of milliseconds the Hammer will wait during the
      * start of two consecutive fake users.
-     * @param disableStats whether statistics should be disabled.
      * @param credentials a list of <tt>Credentials</tt> used for the login
      * of the fake users.
      * @param overallStats enable or not the logging of the overall stats
@@ -333,7 +342,6 @@ public class Hammer
      */
     public void start(
         int wait,
-        boolean disableStats,
         List<Credential> credentials,
         boolean overallStats,
         boolean allStats,
@@ -346,8 +354,7 @@ public class Hammer
             logger.warn("Hammer already started");
             return;
         }
-        if (!disableStats)
-            hammerStats = new HammerStats();
+        
 
         if (credentials != null)
             startUsersWithCredentials(credentials, wait);
